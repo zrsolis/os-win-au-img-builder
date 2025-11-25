@@ -13,10 +13,10 @@ if ($wintype -eq 2) {
     break
 }
 if ($wintype -eq 1) {
-    Write-Output "This is a desktop OS, setting user to admin"
+    Write-Output "This is a desktop OS, setting user to Admin"
     $user = "Admin"
 } else {
-    Write-Output "This is a server OS, setting user to administrator"
+    Write-Output "This is a server OS, setting user to Administrator"
     $user = "Administrator"
 }
 
