@@ -65,19 +65,19 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\
 
 # Download VirtIO guest agent, mount and get drive letter of mounted ISO
 Invoke-WebRequest -Uri https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso -OutFile "$path\virtio-win.iso"
-$mount = Mount-DiskImage -ImagePath "$path\virtio-win.iso"
+$mount = Mount-DiskImage -ImagePath "${path}\virtio-win.iso"
 $DL = (Get-DiskImage -DevicePath $mount.DevicePath | Get-Volume).DriveLetter
 
 # Install VirtIO drivers
-Start-Process "msiexec.exe" -Wait -ArgumentList ("/I $DL:\virtio-win-gt-x64.msi /qn ADDLOCAL=ALL /norestart")
+Start-Process "msiexec.exe" -Wait -ArgumentList ("/I ${DL}:\virtio-win-gt-x64.msi /qn ADDLOCAL=ALL /norestart")
 
 # install Qemu Guest Agent
-Start-Process "msiexec.exe" -Wait -ArgumentList ("/I $DL:\guest-agent\qemu-ga-x86_64.msi /qn /norestart")
+Start-Process "msiexec.exe" -Wait -ArgumentList ("/I ${DL}:\guest-agent\qemu-ga-x86_64.msi /qn /norestart")
 Dismount-DiskImage -DevicePath $mount.DevicePath | Out-Null
 
 # Install CloudBase-Init
 Invoke-WebRequest -Uri https://cloudbase.it/downloads/CloudbaseInitSetup_Stable_x64.msi -OutFile "$path\CloudBaseInitSetup_Stable_x64.msi"
-Start-Process "msiexec.exe" -Wait -ArgumentList("/I $path\CloudBaseInitSetup_Stable_x64.msi /qn USERNAME=$user LOGGINGSERIALPORTNAME=""COM1"" /norestart")
+Start-Process "msiexec.exe" -Wait -ArgumentList("/I ${path}\CloudBaseInitSetup_Stable_x64.msi /qn USERNAME=$user LOGGINGSERIALPORTNAME=""COM1"" /norestart")
 
 # Cleanup History
 Remove-Item "$env:APPDATA\Microsoft\Windows\Recent\*.*"
